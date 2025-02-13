@@ -40,4 +40,4 @@ out/
 .kotlin
 
 ### Project Specific ###
-docker/grafana/data/plugins
+docker/grafana/data
