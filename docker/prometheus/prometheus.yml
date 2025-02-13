@@ -1,0 +1,10 @@
+global:
+  scrape_interval:     15s
+scrape_configs:
+  - job_name: 'graphql-tips'
+
+    scrape_interval: 5s
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+
