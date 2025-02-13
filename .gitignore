@@ -38,3 +38,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### Project Specific ###
+docker/grafana/data/plugins
