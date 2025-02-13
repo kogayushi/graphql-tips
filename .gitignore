@@ -40,4 +40,5 @@ out/
 .kotlin
 
 ### Project Specific ###
-docker/grafana/data/plugins
+docker/grafana/data
+docker/grafana/data/grafana.db
