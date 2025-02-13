@@ -41,6 +41,8 @@ dependencies {
 	testImplementation("org.springframework:spring-webflux")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4")
 }
 
 kotlin {
