@@ -22,3 +22,6 @@ management:
 spring:
   application:
     name: spring-for-graphql-tips-by-small-startup
+  graphql:
+    graphiql:
+      enabled: true

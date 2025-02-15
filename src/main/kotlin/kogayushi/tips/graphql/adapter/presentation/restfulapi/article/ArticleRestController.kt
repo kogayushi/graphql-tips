@@ -3,7 +3,7 @@ package kogayushi.tips.graphql.adapter.presentation.restfulapi.article
 import kogayushi.tips.graphql.adapter.presentation.restfulapi.article.dto.ArticleDto
 import kogayushi.tips.graphql.adapter.presentation.restfulapi.article.dto.toArticleDto
 import kogayushi.tips.graphql.application.article.FetchArticles
-import kogayushi.tips.graphql.application.user.FetchArticlesByAuthorId
+import kogayushi.tips.graphql.application.article.FetchArticlesByAuthorId
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
