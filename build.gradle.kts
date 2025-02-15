@@ -1,8 +1,11 @@
+import org.asciidoctor.gradle.jvm.AsciidoctorTask
+
 plugins {
 	kotlin("jvm") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
 	id("org.springframework.boot") version "3.4.2"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("org.asciidoctor.jvm.convert") version "4.0.4"
 }
 
 group = "kogayushi.tips"
@@ -30,7 +33,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("io.micrometer:micrometer-tracing-bridge-brave")
 	implementation("io.zipkin.reporter2:zipkin-reporter-brave")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -53,4 +55,17 @@ kotlin {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+asciidoctorj {
+	modules {
+		diagram.use()
+	}
+}
+
+tasks {
+	withType<AsciidoctorTask> {
+		inputs.dir("src/docs/asciidoc")
+		baseDirFollowsSourceFile()
+	}
 }

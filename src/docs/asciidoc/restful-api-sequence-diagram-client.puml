@@ -1,0 +1,22 @@
+@startuml
+autonumber
+
+participant Client
+participant "API Server" as API
+
+Client -> API: GET /api/articles
+API --> Client: Articles JSON
+
+Client -> Client: Extract article IDs
+
+Client -> API: GET /api/articles/{ARTICLE_IDS}/comments
+API --> Client: Comments JSON
+
+Client -> Client: Extract user IDs (article authors, comment authors, likedBy users)
+
+Client -> API: GET /api/users/{USER_IDS}
+API --> Client: Users JSON
+
+Client -> Client: Merge articles, comments, and users into final JSON
+
+@enduml

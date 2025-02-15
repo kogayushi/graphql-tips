@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+
+class Article {
+  +id: ID
+  +title: String
+  +content: String
+  +author: UUID
+}
+
+class User {
+  +id: UUID
+  +name: String
+}
+
+class Comment {
+  +id: UUID
+  +article: UUID
+  +content: String
+  +author: UUID
+}
+
+Article -- User
+Article -- Comment
+Comment -- User
+@enduml

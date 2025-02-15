@@ -1,0 +1,37 @@
+@startuml
+autonumber
+
+participant Client
+participant "API Server" as API
+participant "Application Service" as AppService
+participant "Article Repository" as Article
+participant "Comment Repository" as Comment
+participant "User Repository" as User
+
+Client -> API: GET /api/articles
+
+API -> AppService: Fetch articles with related data
+
+AppService -> Article: Fetch articles
+Article --> AppService: Articles data
+AppService -> AppService: Extract article IDs
+
+AppService -> Comment: Fetch comments by article IDs
+Comment --> AppService: Comments data
+
+AppService -> AppService: Extract article author's user IDs
+AppService -> AppService: Extract comment author's user IDs
+AppService -> AppService: Extract likedBy user IDs
+
+AppService -> AppService: Merge user IDs
+
+AppService -> User: Fetch user info
+User --> AppService: User data
+
+AppService -> AppService: Merge articles, comments, and users
+
+AppService --> API: Merged data
+
+API --> Client: Articles JSON (including authors, comments, likes)
+
+@enduml
