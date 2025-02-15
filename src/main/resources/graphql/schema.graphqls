@@ -1,0 +1,24 @@
+type Query {
+    articles: [Article!]!
+}
+
+type Article {
+    id: ID!
+    title: String!
+    content: String!
+
+    author: User!
+    comments: [Comment!]!
+    likedBy: [User!]!
+}
+
+type Comment {
+    id: ID!
+    content: String!
+    author: User!
+}
+
+type User {
+    id: ID!
+    name: String!
+}
