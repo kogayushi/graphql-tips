@@ -22,3 +22,6 @@ management:
 spring:
   application:
     name: graphql-tips
+  graphql:
+    graphiql:
+      enabled: true
