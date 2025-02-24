@@ -19,11 +19,13 @@ class ArticleRestController(
 
     @GetMapping
     fun getArticles(): List<ArticleDto> {
+        Thread.sleep(100L)
         return fetchArticles.handle().map { it.toArticleDto() }
     }
 
     @GetMapping("/by-authors/{authorIds}")
     fun getArticlesByAuthorIds(@PathVariable authorIds: List<UUID>): List<ArticleDto> {
+        Thread.sleep(100L)
         val articles = fetchArticlesByAuthorId.handle(authorIds)
         return articles.map { it.toArticleDto() }
     }

@@ -23,6 +23,7 @@ class UserRestController(
     fun getUsers(
         @PathVariable userIds: List<UUID>
     ): List<UserDto> {
+        Thread.sleep(100L)
         return fetchUsers.handle(
             FetchUsersInputData(
                 userIds = userIds
@@ -32,6 +33,7 @@ class UserRestController(
 
     @GetMapping
     fun getAllUsers(): List<UserDto> {
+        Thread.sleep(100L)
         return fetchAllUser.handle()
             .map { it.toUserDto() }
     }
