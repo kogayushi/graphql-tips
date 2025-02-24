@@ -1,4 +1,5 @@
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
 	kotlin("jvm") version "1.9.25"
@@ -68,4 +69,13 @@ tasks {
 		inputs.dir("src/docs/asciidoc")
 		baseDirFollowsSourceFile()
 	}
+}
+
+tasks.withType<BootBuildImage> {
+	imageName = "kogayushi/graphql-tips"
+	environment = mapOf(
+		"BP_JVM_TYPE" to "JDK",
+		"BP_JVM_VERSION" to "21",
+		"BP_JVM_CDS_ENABLED" to "true",
+	)
 }
