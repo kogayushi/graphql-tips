@@ -22,6 +22,9 @@ management:
 spring:
   application:
     name: spring-for-graphql-tips-by-small-startup
+  threads:
+    virtual:
+      enabled: true
   graphql:
     graphiql:
       enabled: true
