@@ -16,6 +16,7 @@ class CommentRestController(private val fetchComments: FetchComments) {
     fun getComments(
         @PathVariable articleIds: List<UUID>
     ): List<CommentDto> {
+        Thread.sleep(100L)
         return fetchComments.handle(
             FetchCommentsInputData(
                 articleIds = articleIds

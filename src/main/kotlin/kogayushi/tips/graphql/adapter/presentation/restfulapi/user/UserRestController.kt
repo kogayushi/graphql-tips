@@ -20,6 +20,7 @@ class UserRestController(
     fun getUsers(
         @PathVariable userIds: List<UUID>
     ): List<User> {
+        Thread.sleep(100L)
         return fetchUsers.handle(
             FetchUsersInputData(
                 userIds = userIds

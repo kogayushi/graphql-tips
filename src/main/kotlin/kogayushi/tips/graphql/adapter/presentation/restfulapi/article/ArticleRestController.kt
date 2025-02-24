@@ -15,6 +15,7 @@ class ArticleRestController(
 
     @GetMapping
     fun getArticles(): List<ArticleDto> {
+        Thread.sleep(100L)
         return fetchArticles.handle().map { it.toArticleDto() }
     }
 }

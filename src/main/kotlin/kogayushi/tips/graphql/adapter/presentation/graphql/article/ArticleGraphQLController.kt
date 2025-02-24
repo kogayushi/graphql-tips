@@ -14,6 +14,7 @@ class ArticleGraphQLController(
     @QueryMapping
     fun articles(): List<Article> {
         val articles = fetchArticles.handle()
+        Thread.sleep(100L)
         return articles.map { it.toArticleDto() }
     }
 }
