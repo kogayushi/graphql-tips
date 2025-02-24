@@ -28,6 +28,8 @@ class CommentGraphQLController(
     fun commentsOfArticle(articles: List<Article>): Map<Article, List<Comment>> {
         val articleIds = articles.map { it.id }
         val comments = fetchComments.handle(FetchCommentsInputData(articleIds))
+        Thread.sleep(100L)
+
         return articles.associateWith {
             val articleComments = comments.filter { comment -> comment.articleId == it.id }
             articleComments.map { it.toCommentDto() }

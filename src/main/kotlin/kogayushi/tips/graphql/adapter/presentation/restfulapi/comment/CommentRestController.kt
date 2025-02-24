@@ -20,6 +20,7 @@ class CommentRestController(
     fun getComments(
         @PathVariable articleIds: List<UUID>
     ): List<CommentDto> {
+        Thread.sleep(100L)
         return fetchComments.handle(
             FetchCommentsInputData(
                 articleIds = articleIds
@@ -31,6 +32,7 @@ class CommentRestController(
 
     @GetMapping("/comments/by-authors/{authorIds}")
     fun getCommentsByAuthorIds(@PathVariable authorIds: List<UUID>): List<CommentDto> {
+        Thread.sleep(100L)
         val comments = fetchCommentsByAuthorIds.handle(authorIds)
         return comments.map { it.toCommentDto() }
     }

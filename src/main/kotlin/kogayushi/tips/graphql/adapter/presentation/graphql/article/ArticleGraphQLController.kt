@@ -20,12 +20,14 @@ class ArticleGraphQLController(
 
     @QueryMapping
     fun articles(): List<Article> {
+        Thread.sleep(100L)
         val articles = fetchArticles.handle()
         return articles.map { it.toArticleDto() }
     }
 
     @BatchMapping(field = "articles")
     fun articlesOfUser(users: List<User>): Map<User, List<Article>> {
+        Thread.sleep(100L)
         val userIds = users.map { it.id }
         val articles = fetchArticlesByAuthorId.handle(userIds)
         return users.associateWith { user ->
@@ -36,6 +38,7 @@ class ArticleGraphQLController(
 
     @BatchMapping(field = "article")
     fun articlesOfComments(comments: List<Comment>): Map<Comment, Article> {
+        Thread.sleep(100L)
         val articleIds = comments.map { it.articleId }
         val articles = fetchArticlesByArticleIds.handle(articleIds)
         return comments.associateWith { comment ->
