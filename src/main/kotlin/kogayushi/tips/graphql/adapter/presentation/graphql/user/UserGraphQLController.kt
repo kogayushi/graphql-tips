@@ -24,6 +24,7 @@ class UserGraphQLController(
     fun authorsOfArticle(articles: List<Article>): Map<Article, User> {
         val userIds = articles.map { it.authorId }
         val users = fetchUsers.handle(FetchUsersInputData(userIds))
+        Thread.sleep(100L)
         return articles.associateWith {
             val user = users.find { user -> user.id == it.authorId } ?: throw IllegalStateException("User not found")
             user.toUserDto()
@@ -34,6 +35,7 @@ class UserGraphQLController(
     fun authorOfComment(articles: List<Comment>): Map<Comment, User> {
         val userIds = articles.map { it.authorId }
         val users = fetchUsers.handle(FetchUsersInputData(userIds))
+        Thread.sleep(100L)
         return articles.associateWith {
             val user = users.find { user -> user.id == it.authorId } ?: throw IllegalStateException("User not found")
             user.toUserDto()
@@ -44,6 +46,7 @@ class UserGraphQLController(
     fun likedByOfArticle(articles: List<Article>): Map<Article, List<User>> {
         val userIds = articles.map { it.likedBy }.flatten()
         val users = fetchUsers.handle(FetchUsersInputData(userIds))
+        Thread.sleep(100L)
         return articles.associateWith {
             val likedBy = users.filter { user -> user.id in it.likedBy }
             likedBy.map { it.toUserDto() }
