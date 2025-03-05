@@ -1,0 +1,5 @@
+Label,# Samples,Average,Median,90% Line,95% Line,99% Line,Min,Max,Error %,Throughput,Received KB/sec,Sent KB/sec
+restful api scenario - articles,10000,111,111,119,121,127,101,135,0.000%,304.27506,442.15,51.41
+restful api scenario - comments,10000,107,106,114,117,126,101,136,0.000%,304.58090,244.50,87.15
+restful api scenario - user,10000,108,107,115,117,123,101,136,0.000%,304.72011,141.94,105.64
+TOTAL,30000,108,108,117,119,126,101,136,0.000%,906.86497,822.73,242.36
