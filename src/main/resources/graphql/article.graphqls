@@ -1,0 +1,13 @@
+# articles.graphqls
+extend type Query {
+    articles: [Article!]!
+}
+
+type Article {
+    id: ID!
+    title: String!
+    content: String!
+    author: User!
+    comments: [Comment!]!
+    likedBy: [User!]!
+}
