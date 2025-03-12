@@ -1,0 +1,10 @@
+extend type Query {
+    comments(articleId: ID): [Comment!]!
+}
+
+type Comment {
+    id: ID!
+    content: String!
+    author: User!
+    article: Article!
+}
