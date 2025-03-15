@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+        #voyager {
+            height: 100vh;
+        }
+    </style>
+
+    <!--
+      GraphQL Voyager itself depends on React DOM.
+      If you do not want to rely on a CDN, you can host these files locally or
+      include them directly in your favored resource bundler.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/react@16/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16/umd/react-dom.production.min.js"></script>
+
+    <!--
+      These two files are served from jsdelivr CDN, however you may wish to
+      copy them directly into your environment, or perhaps include them in your
+      favored resource bundler.
+     -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/graphql-voyager/dist/voyager.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/graphql-voyager/dist/voyager.min.js"></script>
+</head>
+<body>
+<div id="voyager">Loading...</div>
+<script>
+    const { voyagerIntrospectionQuery } = GraphQLVoyager;
+
+    async function fetchIntrospection() {
+        return fetch('/graphql', {
+            method: 'post',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query: voyagerIntrospectionQuery }),
+            credentials: 'include',
+        }).then((response) => response.json());
+    }
+
+    fetchIntrospection().then(introspection => {
+        GraphQLVoyager.init(document.getElementById('voyager'), { introspection });
+    });
+</script>
+</body>
+</html>
+
+
