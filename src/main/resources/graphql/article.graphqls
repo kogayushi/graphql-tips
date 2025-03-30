@@ -5,6 +5,7 @@ extend type Query {
 
 extend type Mutation {
     postArticle(input: ArticleInput!): Article!
+    editArticle(input: EditArticleInput!): Article!
     likeArticle(input: LikeArticleInput!): Boolean!
     unlikeArticle(input: UnlikeArticleInput!): Boolean!
 }
@@ -29,4 +30,10 @@ input LikeArticleInput {
 
 input UnlikeArticleInput {
     articleId: ID!
+}
+
+input EditArticleInput {
+    articleId: ID!
+    title: String!
+    content: String!
 }

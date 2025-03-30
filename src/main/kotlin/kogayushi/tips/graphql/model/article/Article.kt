@@ -25,4 +25,14 @@ data class Article(
             this
         }
     }
+
+    fun updated(title: String, content: String): Article {
+        return Article(
+            id = this.id,
+            title = title,
+            content = content,
+            authorId = this.authorId,
+            likedBy = this.likedBy
+        )
+    }
 }

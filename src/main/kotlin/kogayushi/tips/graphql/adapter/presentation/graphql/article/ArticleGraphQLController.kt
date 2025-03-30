@@ -1,12 +1,15 @@
 package kogayushi.tips.graphql.adapter.presentation.graphql.article
 
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.Article
+import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.EditArticleInput
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.LikeArticleInput
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.PostArticleInput
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.UnlikeArticleInput
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.toArticleDto
 import kogayushi.tips.graphql.adapter.presentation.graphql.comment.dto.Comment
 import kogayushi.tips.graphql.adapter.presentation.graphql.user.dto.User
+import kogayushi.tips.graphql.application.article.EditArticle
+import kogayushi.tips.graphql.application.article.EditArticleInputData
 import kogayushi.tips.graphql.application.article.FetchArticles
 import kogayushi.tips.graphql.application.article.FetchArticlesByArticleIds
 import kogayushi.tips.graphql.application.article.FetchArticlesByAuthorId
@@ -30,6 +33,7 @@ class ArticleGraphQLController(
     private val fetchArticlesByAuthorId: FetchArticlesByAuthorId,
     private val fetchArticlesByArticleIds: FetchArticlesByArticleIds,
     private val postArticle: PostArticle,
+    private val editArticle: EditArticle,
     private val likeArticle: LikeArticle,
     private val unlikeArticle: UnlikeArticle,
 ) {
@@ -74,6 +78,19 @@ class ArticleGraphQLController(
             authorId = UserRepository.USER_ID_1
         )
         val article = postArticle.handle(inputData)
+        return article.toArticleDto()
+    }
+
+    @MutationMapping
+    fun editArticle(
+        @Validated @Argument input: EditArticleInput
+    ): Article {
+        val inputData = EditArticleInputData(
+            articleId = input.articleIdAsNotNull,
+            title = input.titleAsNotNull,
+            content = input.contentAsNotNull
+        )
+        val article = editArticle.handle(inputData)
         return article.toArticleDto()
     }
 
