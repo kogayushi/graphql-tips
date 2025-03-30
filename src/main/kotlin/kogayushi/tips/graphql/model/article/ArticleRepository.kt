@@ -20,7 +20,8 @@ class ArticleRepository {
             likedBy = listOf(
                 UserRepository.USER_ID_3,
                 UserRepository.USER_ID_4
-            )
+            ),
+            scheduledPublishDate = null
         ),
         Article(
             id = ARTICLE_ID_2,
@@ -32,7 +33,8 @@ class ArticleRepository {
             authorId = UserRepository.USER_ID_1,
             likedBy = listOf(
                 UserRepository.USER_ID_5
-            )
+            ),
+            scheduledPublishDate = null
         ),
         Article(
             id = ARTICLE_ID_3,
@@ -44,6 +46,7 @@ class ArticleRepository {
             """.trimIndent(),
             authorId = UserRepository.USER_ID_2,
             likedBy = emptyList(),
+            scheduledPublishDate = null
         )
     )
 
