@@ -1,15 +1,21 @@
 package kogayushi.tips.graphql.adapter.presentation.graphql.article
 
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.Article
+import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.LikeArticleInput
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.PostArticleInput
+import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.UnlikeArticleInput
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.toArticleDto
 import kogayushi.tips.graphql.adapter.presentation.graphql.comment.dto.Comment
 import kogayushi.tips.graphql.adapter.presentation.graphql.user.dto.User
 import kogayushi.tips.graphql.application.article.FetchArticles
 import kogayushi.tips.graphql.application.article.FetchArticlesByArticleIds
 import kogayushi.tips.graphql.application.article.FetchArticlesByAuthorId
+import kogayushi.tips.graphql.application.article.LikeArticle
+import kogayushi.tips.graphql.application.article.LikeArticleInputData
 import kogayushi.tips.graphql.application.article.PostArticle
 import kogayushi.tips.graphql.application.article.PostArticleInputData
+import kogayushi.tips.graphql.application.article.UnlikeArticle
+import kogayushi.tips.graphql.application.article.UnlikeArticleInputData
 import kogayushi.tips.graphql.model.user.UserRepository
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.BatchMapping
@@ -24,6 +30,8 @@ class ArticleGraphQLController(
     private val fetchArticlesByAuthorId: FetchArticlesByAuthorId,
     private val fetchArticlesByArticleIds: FetchArticlesByArticleIds,
     private val postArticle: PostArticle,
+    private val likeArticle: LikeArticle,
+    private val unlikeArticle: UnlikeArticle,
 ) {
 
     @QueryMapping
@@ -67,5 +75,30 @@ class ArticleGraphQLController(
         )
         val article = postArticle.handle(inputData)
         return article.toArticleDto()
+    }
+
+    @MutationMapping
+    fun likeArticle(
+        @Validated @Argument input: LikeArticleInput
+    ): Boolean {
+        val inputData = LikeArticleInputData(
+            articleId = input.articleIdAsNotNull,
+            userId = UserRepository.USER_ID_3
+        )
+        likeArticle.handle(inputData)
+        return true
+    }
+
+    @MutationMapping
+    fun unlikeArticle(
+        @Validated @Argument input: UnlikeArticleInput
+    ): Boolean {
+        val inputData = UnlikeArticleInputData(
+            articleId = input.articleIdAsNotNull,
+            userId = UserRepository.USER_ID_3
+        )
+        unlikeArticle.handle(inputData)
+
+        return true
     }
 }
