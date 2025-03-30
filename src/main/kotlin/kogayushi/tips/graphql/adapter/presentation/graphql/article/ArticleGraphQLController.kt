@@ -87,8 +87,8 @@ class ArticleGraphQLController(
     ): Article {
         val inputData = EditArticleInputData(
             articleId = input.articleIdAsNotNull,
-            title = input.titleAsNotNull,
-            content = input.contentAsNotNull
+            title = if (input.isTitlePresent) input.titleValue else null,
+            content = if (input.isContentPresent) input.contentValue else null
         )
         val article = editArticle.handle(inputData)
         return article.toArticleDto()

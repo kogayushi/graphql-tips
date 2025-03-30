@@ -1,5 +1,6 @@
 package kogayushi.tips.graphql.application.article
 
+import kogayushi.tips.graphql.adapter.presentation.graphql.OmittableValue
 import kogayushi.tips.graphql.model.article.Article
 import kogayushi.tips.graphql.model.article.ArticleRepository
 import org.springframework.stereotype.Service
@@ -25,6 +26,6 @@ class EditArticle(
 
 data class EditArticleInputData(
     val articleId: UUID,
-    val title: String,
-    val content: String,
+    val title: OmittableValue<String>,
+    val content: OmittableValue<String>,
 )

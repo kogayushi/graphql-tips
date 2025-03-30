@@ -3,21 +3,16 @@ package kogayushi.tips.graphql.adapter.presentation.graphql.article.dto
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
+import org.springframework.graphql.data.ArgumentValue
 import java.util.UUID
 
 data class EditArticleInput(
     @field:NotNull
     val articleId: UUID?,
 
-    @field:NotBlank
-    @field:Size(min = 3, max = 100)
-    val title: String?,
+    val title: ArgumentValue<@NotBlank @Size(min = 3, max = 100) String>,
 
-    @field:NotBlank
-    @field:Size(min = 10, max = 5000)
-    val content: String?,
+    val content: ArgumentValue<@NotBlank @Size(min = 10, max = 5000) String>,
 ) {
     val articleIdAsNotNull by lazy { articleId!! }
-    val titleAsNotNull by lazy { title!! }
-    val contentAsNotNull by lazy { content!! }
 }
