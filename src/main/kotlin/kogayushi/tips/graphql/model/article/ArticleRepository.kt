@@ -8,7 +8,7 @@ import java.util.UUID
 @Component
 class ArticleRepository {
 
-    private val inMemory = listOf(
+    private val inMemory = mutableListOf(
         Article(
             id = ARTICLE_ID_1,
             title = "小規模スタートアップにおけるSpring for GraphQL活用事例",
@@ -57,6 +57,11 @@ class ArticleRepository {
 
     fun resolveByArticleIds(articleIds: List<UUID>): List<Article> {
         return inMemory.filter { it.id in articleIds }
+    }
+
+    fun add(article: Article): Article {
+        inMemory.add(article)
+        return article
     }
 
     companion object {

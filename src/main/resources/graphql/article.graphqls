@@ -3,6 +3,10 @@ extend type Query {
     articles: [Article!]!
 }
 
+extend type Mutation {
+    postArticle(input: ArticleInput!): Article!
+}
+
 type Article {
     id: ID!
     title: String!
@@ -10,4 +14,9 @@ type Article {
     author: User!
     comments: [Comment!]!
     likedBy: [User!]!
+}
+
+input ArticleInput {
+    title: String!
+    content: String!
 }
