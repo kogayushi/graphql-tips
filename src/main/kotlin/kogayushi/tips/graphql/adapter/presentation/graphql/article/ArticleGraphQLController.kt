@@ -1,5 +1,6 @@
 package kogayushi.tips.graphql.adapter.presentation.graphql.article
 
+import kogayushi.tips.graphql.adapter.presentation.graphql.OmittableValue
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.Article
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.EditArticleInput
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.LikeArticleInput
@@ -75,7 +76,8 @@ class ArticleGraphQLController(
         val inputData = PostArticleInputData(
             title = input.titleAsNotNull,
             content = input.contentAsNotNull,
-            authorId = UserRepository.USER_ID_1
+            authorId = UserRepository.USER_ID_1,
+            scheduledPublishDate = input.scheduledPublishDate
         )
         val article = postArticle.handle(inputData)
         return article.toArticleDto()
@@ -87,8 +89,18 @@ class ArticleGraphQLController(
     ): Article {
         val inputData = EditArticleInputData(
             articleId = input.articleIdAsNotNull,
-            title = if (input.isTitlePresent) input.titleValue else null,
-            content = if (input.isContentPresent) input.contentValue else null
+            title = OmittableValue(
+                isOmitted = input.title.isOmitted,
+                value = input.title.value()
+            ),
+            content = OmittableValue(
+                isOmitted = input.content.isOmitted,
+                value = input.content.value()
+            ),
+            scheduledPublishDate = OmittableValue(
+                isOmitted = input.scheduledPublishDate.isOmitted,
+                value = input.scheduledPublishDate.value()
+            )
         )
         val article = editArticle.handle(inputData)
         return article.toArticleDto()

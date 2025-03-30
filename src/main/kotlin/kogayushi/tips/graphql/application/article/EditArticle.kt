@@ -4,6 +4,7 @@ import kogayushi.tips.graphql.adapter.presentation.graphql.OmittableValue
 import kogayushi.tips.graphql.model.article.Article
 import kogayushi.tips.graphql.model.article.ArticleRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
@@ -16,7 +17,8 @@ class EditArticle(
 
         val updatedArticle = article.updated(
             title = inputData.title,
-            content = inputData.content
+            content = inputData.content,
+            scheduledPublishDate = inputData.scheduledPublishDate
         )
 
         articleRepository.update(updatedArticle)
@@ -28,4 +30,5 @@ data class EditArticleInputData(
     val articleId: UUID,
     val title: OmittableValue<String>,
     val content: OmittableValue<String>,
+    val scheduledPublishDate: OmittableValue<LocalDateTime?>,
 )

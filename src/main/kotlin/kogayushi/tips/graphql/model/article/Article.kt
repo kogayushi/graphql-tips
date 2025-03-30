@@ -1,6 +1,7 @@
 package kogayushi.tips.graphql.model.article
 
 import kogayushi.tips.graphql.adapter.presentation.graphql.OmittableValue
+import java.time.LocalDateTime
 import java.util.UUID
 
 data class Article(
@@ -9,6 +10,7 @@ data class Article(
     val content: String,
     val authorId: UUID,
     val likedBy: List<UUID>,
+    val scheduledPublishDate: LocalDateTime?,
 ) {
 
     fun likedBy(userId: UUID): Article {
@@ -27,23 +29,29 @@ data class Article(
         }
     }
 
-    fun updated(title: OmittableValue<String>, content: OmittableValue<String>): Article {
+    fun updated(title: OmittableValue<String>, content: OmittableValue<String>, scheduledPublishDate: OmittableValue<LocalDateTime?>): Article {
         val updatingTitle = if (title.isOmitted) {
             this.title
         } else {
-            title.value
+            title.value!!
         }
         val updatingContent = if (content.isOmitted) {
             this.content
         } else {
-            content.value
+            content.value!!
+        }
+        val updatingScheduledPublishDate = if (scheduledPublishDate.isOmitted) {
+            this.scheduledPublishDate
+        } else {
+            scheduledPublishDate.value
         }
         return Article(
             id = this.id,
             title = updatingTitle,
             content = updatingContent,
             authorId = this.authorId,
-            likedBy = this.likedBy
+            likedBy = this.likedBy,
+            scheduledPublishDate = updatingScheduledPublishDate
         )
     }
 }
