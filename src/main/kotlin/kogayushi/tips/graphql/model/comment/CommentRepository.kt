@@ -9,8 +9,8 @@ import java.util.UUID
 @Component
 class CommentRepository {
 
-    private val inMemory = mapOf(
-        ArticleRepository.ARTICLE_ID_1 to listOf(
+    private val inMemory = mutableMapOf(
+        ArticleRepository.ARTICLE_ID_1 to mutableListOf(
             Comment(
                 id = COMMENT_ID_1,
                 articleId = ArticleRepository.ARTICLE_ID_1,
@@ -24,7 +24,7 @@ class CommentRepository {
                 authorId = UserRepository.USER_ID_4
             )
         ),
-        ArticleRepository.ARTICLE_ID_2 to listOf(
+        ArticleRepository.ARTICLE_ID_2 to mutableListOf(
             Comment(
                 id = COMMENT_ID_3,
                 articleId = ArticleRepository.ARTICLE_ID_2,
@@ -44,6 +44,12 @@ class CommentRepository {
 
     fun resolveByAuthorIds(authorIds: List<UUID>): List<Comment> {
         return inMemory.values.flatten().filter { it.authorId in authorIds }
+    }
+
+    fun add(comment: Comment): Comment {
+        val comments = inMemory.getOrPut(comment.articleId) { mutableListOf() }
+        comments.add(comment)
+        return comment
     }
 
     companion object {
