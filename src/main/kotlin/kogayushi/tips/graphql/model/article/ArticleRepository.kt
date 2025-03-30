@@ -68,6 +68,11 @@ class ArticleRepository {
         return article
     }
 
+    fun update(article: Article) {
+        val index = inMemory.indexOfFirst { it.id == article.id }
+        inMemory[index] = article
+    }
+
     companion object {
         val ARTICLE_ID_1 = UUID.fromString("ca69942f-9ab9-481b-a6b8-8cd937020dbf")
         val ARTICLE_ID_2 = UUID.fromString("1bdc461b-d7cf-488b-88e6-5fb0f5f473a9")
