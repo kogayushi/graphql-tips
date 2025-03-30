@@ -3,9 +3,18 @@ extend type Query {
     comments(articleId: ID): [Comment!]!
 }
 
+extend type Mutation {
+    postComment(input: CommentInput!): Comment!
+}
+
 type Comment {
     id: ID!
     content: String!
     author: User!
     article: Article!
+}
+
+input CommentInput {
+    articleId: ID!
+    content: String!
 }
