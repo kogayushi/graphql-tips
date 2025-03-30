@@ -55,6 +55,10 @@ class ArticleRepository {
         return inMemory.filter { it.authorId in authorId }
     }
 
+    fun resolveByArticleId(articleId: UUID): Article? {
+        return inMemory.find { it.id == articleId }
+    }
+
     fun resolveByArticleIds(articleIds: List<UUID>): List<Article> {
         return inMemory.filter { it.id in articleIds }
     }
