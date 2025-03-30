@@ -1,5 +1,6 @@
 package kogayushi.tips.graphql.model.article
 
+import kogayushi.tips.graphql.adapter.presentation.graphql.OmittableValue
 import java.util.UUID
 
 data class Article(
@@ -11,7 +12,7 @@ data class Article(
 ) {
 
     fun likedBy(userId: UUID): Article {
-        return if(this.likedBy.contains(userId)) {
+        return if (this.likedBy.contains(userId)) {
             this
         } else {
             this.copy(likedBy = this.likedBy + userId)
@@ -19,18 +20,28 @@ data class Article(
     }
 
     fun unlikedBy(userId: UUID): Article {
-        return if(this.likedBy.contains(userId)) {
+        return if (this.likedBy.contains(userId)) {
             this.copy(likedBy = this.likedBy - userId)
         } else {
             this
         }
     }
 
-    fun updated(title: String, content: String): Article {
+    fun updated(title: OmittableValue<String>, content: OmittableValue<String>): Article {
+        val updatingTitle = if (title.isOmitted) {
+            this.title
+        } else {
+            title.value
+        }
+        val updatingContent = if (content.isOmitted) {
+            this.content
+        } else {
+            content.value
+        }
         return Article(
             id = this.id,
-            title = title,
-            content = content,
+            title = updatingTitle,
+            content = updatingContent,
             authorId = this.authorId,
             likedBy = this.likedBy
         )
