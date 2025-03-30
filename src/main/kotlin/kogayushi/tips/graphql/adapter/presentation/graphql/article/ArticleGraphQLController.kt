@@ -1,21 +1,29 @@
 package kogayushi.tips.graphql.adapter.presentation.graphql.article
 
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.Article
+import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.PostArticleInput
 import kogayushi.tips.graphql.adapter.presentation.graphql.article.dto.toArticleDto
 import kogayushi.tips.graphql.adapter.presentation.graphql.comment.dto.Comment
 import kogayushi.tips.graphql.adapter.presentation.graphql.user.dto.User
 import kogayushi.tips.graphql.application.article.FetchArticles
 import kogayushi.tips.graphql.application.article.FetchArticlesByArticleIds
 import kogayushi.tips.graphql.application.article.FetchArticlesByAuthorId
+import kogayushi.tips.graphql.application.article.PostArticle
+import kogayushi.tips.graphql.application.article.PostArticleInputData
+import kogayushi.tips.graphql.model.user.UserRepository
+import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.BatchMapping
+import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
+import org.springframework.validation.annotation.Validated
 
 @Controller
 class ArticleGraphQLController(
     private val fetchArticles: FetchArticles,
     private val fetchArticlesByAuthorId: FetchArticlesByAuthorId,
     private val fetchArticlesByArticleIds: FetchArticlesByArticleIds,
+    private val postArticle: PostArticle,
 ) {
 
     @QueryMapping
@@ -46,5 +54,18 @@ class ArticleGraphQLController(
                 "detected coding bug: article not found for comment: $comment"
             )
         }
+    }
+
+    @MutationMapping
+    fun postArticle(
+        @Validated @Argument input: PostArticleInput
+    ): Article {
+        val inputData = PostArticleInputData(
+            title = input.titleAsNotNull,
+            content = input.contentAsNotNull,
+            authorId = UserRepository.USER_ID_1
+        )
+        val article = postArticle.handle(inputData)
+        return article.toArticleDto()
     }
 }
