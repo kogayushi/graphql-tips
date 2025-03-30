@@ -8,4 +8,21 @@ data class Article(
     val content: String,
     val authorId: UUID,
     val likedBy: List<UUID>,
-)
+) {
+
+    fun likedBy(userId: UUID): Article {
+        return if(this.likedBy.contains(userId)) {
+            this
+        } else {
+            this.copy(likedBy = this.likedBy + userId)
+        }
+    }
+
+    fun unlikedBy(userId: UUID): Article {
+        return if(this.likedBy.contains(userId)) {
+            this.copy(likedBy = this.likedBy - userId)
+        } else {
+            this
+        }
+    }
+}
