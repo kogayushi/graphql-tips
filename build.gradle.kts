@@ -37,6 +37,8 @@ dependencies {
 	implementation("io.zipkin.reporter2:zipkin-reporter-brave")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+	// TransactionManagerを設定するためだけに依存に追加している
+	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -44,6 +46,8 @@ dependencies {
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("org.springframework:spring-webflux")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
+	// TransactionManagerを設定するためだけに依存に追加している
+	runtimeOnly("com.h2database:h2")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4")
