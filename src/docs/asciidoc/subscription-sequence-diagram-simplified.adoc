@@ -1,0 +1,6 @@
+
+=== Subscription
+[plantuml]
+....
+include::subscription-sequence-diagram-simplified.puml[]
+....

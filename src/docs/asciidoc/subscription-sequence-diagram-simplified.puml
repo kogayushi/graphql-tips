@@ -1,0 +1,49 @@
+@startuml
+hide footbox
+autonumber
+
+title GraphQL Subscription Flow (Simplified)
+
+actor Client
+participant "Subscription" as Sub
+participant "Mutation" as Mut
+participant "Kafka" as Kafka
+participant "EventListener" as Lis
+participant "EventHandler" as Handler
+
+== Subscription Setup ==
+Client -> Sub: subscribe(articleIds)
+activate Sub
+Sub -> Handler: get Flux stream
+activate Handler
+
+
+Handler --> Sub: Flux stream
+Sub --> Client: Flux stream
+deactivate Sub
+
+== Mutation ==
+Client -> Mut: likeArticle()
+activate Mut
+Mut -> Mut: store like
+Mut ->> Kafka: publish(event)
+deactivate Mut
+activate Kafka
+
+== Event Propagation ==
+Kafka ->> Lis : consume(event)
+deactivate Kafka
+activate Lis
+Lis ->> Handler : emit(event)
+deactivate Kafka
+deactivate Lis
+Handler -> Handler: sink.tryEmitNext(event)
+
+== Event Delivery ==
+Handler ->> Sub: emit
+deactivate Handler
+activate Sub
+Sub ->> Client: emit
+deactivate Sub
+
+@enduml

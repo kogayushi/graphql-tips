@@ -1,0 +1,89 @@
+@startuml
+autonumber
+
+title GraphQL Subscription Sequence Diagram - LikeArticle and UnlikeArticle
+
+actor Client
+participant "Mutation" as Mutation
+participant "Subscription" as Subscription
+participant "LikeArticle" as LikeArticleUseCase
+participant "SpringDomainEventPublisher" as Publisher
+participant "Spring Event System" as SpringEvent
+participant "ArticleUpdatedEventListener" as EventListener
+participant "Kafka\narticle-updated topic" as Kafka
+participant "ArticleUpdatedEventConsumer" as EventConsumer
+participant "ArticleUpdatedEventStream" as Stream
+
+
+== Subscription: Stream Initialization ==
+Client -> Subscription: @SubscriptionMapping\nfun updatedArticles(articleIds: List<UUID>): Flux<Article>
+activate Subscription
+Subscription -> Subscription: record startAt = now()
+Subscription -> Stream: fun asFlux(): return Flux<ArticleUpdatedEvent>
+activate Stream
+
+Stream --> Subscription: Flux<ArticleUpdatedEvent>
+Subscription --> Client: return stream
+deactivate Subscription
+note right of Subscription
+  Subscription is suspended until events are emitted and resumed on event push
+end note
+
+== Mutation ==
+Client -> Mutation: @MutationMapping\nfun likeArticle(input): Article
+activate Mutation
+Mutation -> LikeArticleUseCase: @Transactional\nfun handle(input)
+activate LikeArticleUseCase
+
+LikeArticleUseCase -> LikeArticleUseCase: store like in repository
+LikeArticleUseCase -> LikeArticleUseCase: create ArticleUpdatedEvent
+LikeArticleUseCase -> Publisher: fun publish(event)
+activate Publisher
+Publisher ->> SpringEvent: fun publishEvent(event)
+activate SpringEvent
+
+Publisher --> LikeArticleUseCase
+deactivate Publisher
+LikeArticleUseCase --> Mutation:
+deactivate LikeArticleUseCase
+Mutation --> Client: true
+deactivate Mutation
+
+
+SpringEvent ->> EventListener : @TransactionalEventListener(\n    phase = TransactionPhase.AFTER_COMMIT\n)\nfun handle(event)
+deactivate SpringEvent
+activate EventListener
+note right of EventListener
+  Executes after transaction commits
+end note
+EventListener ->> Kafka: fun send("article-updated", event)
+
+== Event Propagation via Kafka ==
+note over Kafka, EventConsumer
+  Kafka is asynchronous; delivery timing is not guaranteed
+end note
+deactivate EventListener
+activate Kafka
+Kafka ->> EventConsumer  : @KafkaListener\nfun consume(event)
+deactivate Kafka
+
+activate EventConsumer
+EventConsumer ->> Stream: fun emit(event)
+deactivate EventConsumer
+
+
+== Subscription: Event Delivery ==
+
+Stream -> Stream: sink.tryEmitNext(event)
+Stream ->> Subscription: event is pushed to stream
+deactivate Stream
+activate Subscription
+note right of Subscription
+  Flux sink delivers the event from Stream to this subscription
+end note
+Subscription -> Subscription: filter by occurredAt >= startAt
+Subscription -> Subscription: filter by articleIds
+Subscription ->> Client: push event
+deactivate Subscription
+
+@enduml
