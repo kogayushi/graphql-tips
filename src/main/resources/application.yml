@@ -28,3 +28,6 @@ spring:
   graphql:
     graphiql:
       enabled: true
+    websocket:
+      keep-alive: 60s
+      path: /graphql
