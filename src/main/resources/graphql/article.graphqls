@@ -9,6 +9,9 @@ extend type Mutation {
     likeArticle(input: LikeArticleInput!): Boolean!
     unlikeArticle(input: UnlikeArticleInput!): Boolean!
 }
+extend type Subscription {
+    updatedArticles(articleIds: [ID!]!): Article!
+}
 
 type Article {
     id: ID!

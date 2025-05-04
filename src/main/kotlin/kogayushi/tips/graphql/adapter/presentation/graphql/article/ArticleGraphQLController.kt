@@ -25,8 +25,12 @@ import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.BatchMapping
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
+import org.springframework.graphql.data.method.annotation.SubscriptionMapping
 import org.springframework.stereotype.Controller
 import org.springframework.validation.annotation.Validated
+import reactor.core.publisher.Flux
+import java.time.OffsetDateTime
+import java.util.UUID
 
 @Controller
 class ArticleGraphQLController(
@@ -37,6 +41,7 @@ class ArticleGraphQLController(
     private val editArticle: EditArticle,
     private val likeArticle: LikeArticle,
     private val unlikeArticle: UnlikeArticle,
+    private val articleUpdatedEventStream: ArticleUpdatedEventStream,
 ) {
 
     @QueryMapping
@@ -129,5 +134,18 @@ class ArticleGraphQLController(
         unlikeArticle.handle(inputData)
 
         return true
+    }
+
+    @SubscriptionMapping
+    fun updatedArticles(
+        @Argument articleIds: List<UUID>,
+    ): Flux<Article> {
+        val startAt = OffsetDateTime.now()
+        return articleUpdatedEventStream
+            .asFlux(
+                articleIds.toSet(),
+                subscribeStartAt = startAt
+            )
+            .map { it.source.toArticleDto() }
     }
 }
