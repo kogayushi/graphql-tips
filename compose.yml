@@ -47,6 +47,10 @@ services:
     depends_on:
       prometheus:
         condition: service_started
+  zipkin:
+    image: openzipkin/zipkin:2
+    ports:
+      - "9411:9411"
 
 volumes:
   grafana_data:

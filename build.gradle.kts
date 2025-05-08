@@ -41,6 +41,7 @@ dependencies {
 	// TransactionManagerを設定するためだけに依存に追加している
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
+	implementation("io.micrometer:micrometer-tracing-bridge-brave")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("io.micrometer:micrometer-registry-prometheus")
