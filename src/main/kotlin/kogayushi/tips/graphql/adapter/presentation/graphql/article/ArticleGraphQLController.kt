@@ -114,26 +114,23 @@ class ArticleGraphQLController(
     @MutationMapping
     fun likeArticle(
         @Validated @Argument input: LikeArticleInput
-    ): Boolean {
+    ): Void {
         val inputData = LikeArticleInputData(
             articleId = input.articleIdAsNotNull,
             userId = UserRepository.USER_ID_3
         )
         likeArticle.handle(inputData)
-        return true
     }
 
     @MutationMapping
     fun unlikeArticle(
         @Validated @Argument input: UnlikeArticleInput
-    ): Boolean {
+    ): Void {
         val inputData = UnlikeArticleInputData(
             articleId = input.articleIdAsNotNull,
             userId = UserRepository.USER_ID_3
         )
         unlikeArticle.handle(inputData)
-
-        return true
     }
 
     @SubscriptionMapping
