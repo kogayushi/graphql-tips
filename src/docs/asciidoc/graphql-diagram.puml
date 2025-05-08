@@ -1,0 +1,31 @@
+@startuml
+left to right direction
+
+class Query {
+    +articles: [Article!]!
+}
+
+class Article {
+  +id: ID!
+  +title: String!
+  +content: String!
+  +author: User!
+}
+
+class User {
+  +id: UUID!
+  +name: String!
+}
+
+class Comment {
+  +id: UUID!
+  +article: Article!
+  +content: String!
+  +author: User!
+}
+
+Query -- Article: query
+Article -- User: edge
+Article -- Comment: edge
+Comment -- User: edge
+@enduml
